@@ -30,6 +30,7 @@ my %header = (
     COVER_TEXT_12 => 'Cover text 12',
 );
 
+
 #-----------------------------------------------------------------------------
 # Purpose  : Find all keys in header hash for a given header parameter basename.
 #            The basename can occur several times added by a number.
@@ -72,6 +73,7 @@ sub find_header_keys_FP {
         sort { $arg{selector}->($a, $b) }
         grep( $_ =~ /$arg{key}/xims, keys %{$arg{header}} );
 }
+
 
 #-----------------------------------------------------------------------------
 # Run test
@@ -128,9 +130,16 @@ my $header_key_finder = sub {
 
 
 my $find_COVER_TEXT = $header_key_finder->(key => 'COVER_TEXT', selector => $selector);
-
 my @result_FP = $find_COVER_TEXT->(%header);
+my @new_values = map { $header{$_} } @result_FP;
 
+print '-' x 80 . "\n";
 print  Data::Dumper->Dump([\@result_FP], [qw(result_FP)]);
-print "Original header\n";
+print '-' x 80 . "\n";
+print  Data::Dumper->Dump([\@new_values], [qw(new_values)]);
+
+print '-' x 80 . "\n";
+print "\nOriginal header\n";
 print  Data::Dumper->Dump([\%header], [qw(*header)]);
+
+1;
