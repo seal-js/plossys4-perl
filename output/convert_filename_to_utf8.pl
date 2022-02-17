@@ -34,10 +34,12 @@ sub main {
 		if ( file_type(e => $out_file) ) {
 			#Log("$out_file already exists.", 'I', $script);
 			print "[I] $out_file already exists.\n";
-			print "[I] Move $out_file .\n";
-			print "[I] $out_file already exists.\n";
+			print "[I] delete $out_file\n";
+			unlinkW($out_file);
+			
 			my $to_file = ' 中文字.pdf';
-			moveW($out_file, $to_file) or confess $!;
+			print "[I] Move $empty_file to $to_file.\n";
+			moveW($empty_file, $to_file) or confess $!;
 		}
 		else {	
 			copyW($empty_file, $out_file) or confess $!;
