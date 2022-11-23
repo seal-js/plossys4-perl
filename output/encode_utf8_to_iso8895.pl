@@ -42,5 +42,15 @@ sub create_valid_filename_iso_8859_1 {
 	return $new_filename;
 }
 
+sub main {
+	#my $filename = '???-0007-00_EN.pdf';
+	my $filename = 'dignité';
+
+	my $new_filename = create_valid_filename_iso_8859_1($filename);
+
+  1;
+}
+
+exit main();
 
 1;
