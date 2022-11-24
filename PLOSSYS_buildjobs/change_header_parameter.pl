@@ -20,7 +20,7 @@ require "libhed.pl";
 
 $| = 1;
 
-my $log;  # file global logger is created in main()
+my $log;  # global logger is created in main()
 
 exit main();
 
@@ -103,7 +103,7 @@ sub create_backup {
         confess "File $file does not exist!\n";
     }
 
-    my $timestamp = DateTime();
+    my $timestamp = DateTime(use => 'bak');
     my $backup_file = "$file.$timestamp.bak ";
 
     copy($file, $backup_file) or do {
@@ -130,7 +130,7 @@ sub change_header_file {
     my %header = HedRead($arg{headerfile}, {}, 1); # Read job header file
     my $header_aref = $arg{params};
 
-    $log->('DEBUG', "Original header file:\n" . Data::Dumper->Dump([\%header], [qw(header)]));
+    $log->('DEBUG', "Original header data:\n" . Data::Dumper->Dump([\%header], [qw(header)]));
 
     foreach my $item (@$header_aref) {
         $log->('DEBUG',  Data::Dumper->Dump([$item], [qw(item)]));
@@ -154,16 +154,24 @@ sub change_header_file {
 #----------------------------------------------------------------------
 #----------------------------------------------------------------------
 sub DateTime {
+    my %default = (use => 'default');
 
-    my ($sec, $min, $hour, $day, $mon, $year, $wday, $yday) = 
-        localtime (time); 
+    my %arg = (%default, @_ );
+
+    my ($secs, $msecs) = gettimeofday;
+    my ($sec, $min, $hour, $day, $mon, $year, $wday, $yday, $isdst) = localtime ($secs); 
    
     # Patch for month (0..11) and year 2000
     $mon++;
     $year = $year + 1900;
 
     # Format datetime string
-    return sprintf ("%04d%02d%02d_%02d%02d%02d", $year, $mon, $day, $hour, $min, $sec);
+    if ( $arg{use} =~ /iso/i ) {
+        return sprintf ("%04d-%02d-%02dT%02d:%02d:%02d.%03d", $year, $mon, $day, $hour, $min, $sec, $msecs);
+    }
+    elsif ( $arg{use} =~ /bak/i ) {
+        return sprintf ("%04d%02d%02d_%02d%02d%02d", $year, $mon, $day, $hour, $min, $sec);
+    }
 }
 
 #-----------------------------------------------------------------
@@ -191,9 +199,36 @@ sub create_logger {
 
     $settings{verbose} = $arg{debug};
 
-    $settings{info}      = sub { my $msg = shift; print "[INFO]  $msg\n" };
-    $settings{debug}     = sub { my $msg = shift; print "[DEBUG] $msg\n" if $settings{verbose}; };
-    $settings{error}     = sub { my $msg = shift; print "[ERROR] $msg\n" };    
+    $settings{info} = sub {
+         my $msg = shift;
+
+         if ( $settings{verbose} ) {
+            print DateTime(use => 'iso') . " [INFO]  $msg\n";
+         }
+         else {
+            print "[INFO]  $msg\n"; 
+         }
+    };
+
+    $settings{debug} = sub {
+        my $msg = shift;
+         
+        if ( $settings{verbose} ) {
+            print DateTime(use => 'iso') . " [DEBUG] $msg\n";
+        }
+    };
+
+    $settings{error} = sub {
+        my $msg = shift; 
+
+        if ( $settings{verbose} ) {
+            print DateTime(use => 'iso') . " [ERROR] $msg\n"; 
+        }
+        else {
+            print "[ERROR] $msg\n";
+        }
+    };    
+
     $settings{set_debug} = sub { my $switch = shift;  $settings{verbose} = $switch; };
     
     return sub {
@@ -203,6 +238,10 @@ sub create_logger {
 
         if ( exists $settings{$sub} ) { 
             $settings{$sub}->($message);
+        }
+        else {
+            $sub ||= '';
+            confess "First parameter must be a valid function name. Unknown function '$sub' called!";
         }
         return;
     } ;
