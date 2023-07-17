@@ -45,10 +45,15 @@ jobs:
           echo Current directory: `pwd`
           ls -al
           echo --------
-          ls /home/scratch/keep/juergen
+          ls /home/scratch/keep/js
 
       - name: Show content of master
         run: |
           ls -al /home/m1/master
+
+      - name: Copy  of master
+        run: |
+          mkdir -p /home/scratch/keep/js/TEMP/apache
+          cp -TRv /home/m1/master/apache_2.4.57
 
 
