@@ -51,9 +51,9 @@ jobs:
         run: |
           ls -al /home/m1/master
 
-      - name: Copy  of master
+      - name: Copy apache from master to scratch/keep/js/Linux
         run: |
-          mkdir -p /home/scratch/keep/js/TEMP/apache
-          cp -TRv /home/m1/master/apache_2.4.57
+          mkdir -p /home/scratch/keep/js/Linux/TEMP/apache
+          cp -TRv /home/m1/master/apache_2.4.57 /home/scratch/keep/js/Linux/TEMP/apache
 
 
