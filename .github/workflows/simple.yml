@@ -15,9 +15,31 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   #workflow_dispatch:
 
+env:
+  DAY_OF_WEEK: Funday
+  testvar: value-1
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  
+  mainjob:
+    name: 'Print the env vars'
+    runs-on: ubuntu-latest
+
+    env:
+      Greeting: Dear
+      test-var: value-2
+
+    steps:
+    - name: print-valuese-of-env-vars
+      run: |
+        echo "$Greeting $First_name. Today is $DAY_OF_WEEK"
+        echo "testvar $testvar"
+        echo "testvar ${{ env.testvar }}"
+      env: 
+        First_name: Student
+        testvar: values-3   
+
   # This workflow contains a single job called "build-app"
   build-app:
     # The type of runner that the job will run on
