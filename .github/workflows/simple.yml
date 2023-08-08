@@ -93,9 +93,9 @@ jobs:
 
   package:
     needs: [build-app]
-    runs-on:
-      - self-hosted
-      - label-1
+    runs-on: ubuntu-latest
+    #  - self-hosted
+    #  - label-1
 
     steps:
       - name: Print Secret
