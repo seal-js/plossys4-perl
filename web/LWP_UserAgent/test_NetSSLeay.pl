@@ -7,8 +7,8 @@ use IO::Socket::SSL qw(debug3);
 use MIME::Base64;
 use Data::Dumper;
  
-my $user = 'manager-script';
-my $pass = 'seal!Manage1';
+my $user = 'manager-s**********';
+my $pass = 'seal!M**********';
 
 my ($page, $result, %headers)                                     # Case 2b
     = get_https('localhost', 9126, '/manager/text/list',
