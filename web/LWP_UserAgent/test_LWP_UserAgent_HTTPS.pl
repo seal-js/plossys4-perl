@@ -22,8 +22,8 @@ my $ua = LWP::UserAgent->new(
 			}
 );
 
-my $user = 'manager-script';
-my $pass = 'seal!Manage1';
+my $user = 'manager-s********';
+my $pass = 'seal!M*********';
 my $realm = 'Tomcat Manager Application';
 
 $ua->credentials("localhost:9126", $realm , $user, $pass);
