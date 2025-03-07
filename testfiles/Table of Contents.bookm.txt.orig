@@ -1,0 +1,18 @@
+# created with dpf::rli::contents_ireport 1.62
+# script used D:\SEAL\applications\server\dpf/scripts/publish/createcontents.pl
+# write bookmarks and hyperlinks
+#PLS_BOOKTXT=text
+#PLS_BOOKTXT=text@Level@topage@tofile
+#PLS_BOOKTXT=text@Level@topage,PositionFromLeft,PositionFromBottom,ZoomFactor@tofile
+#PLS_BOOKTXT=text@Level@topage,PositionFromLeft,PositionFromBottom,ZoomFactor@tofile@openclose@colorrgb@fontstyle
+
+[Global]
+
+VERSION=2
+
+[Page1]
+
+ PLS_BOOKTXT = 1 Cover Sheet@0@1@@open@
+ PLS_BOOKTXT = 2 Table of Contents@0@4@@open@
+ PLS_BOOKTXT = 3 ITP AUSSENGEHÄUSE &GEHÄUSEDECKEL&STUTZEN@0@5@@open@
+ PLS_BOOKTXT = 4 ITP AUSSENGEHÄUSE KOMPLETT@0@6@@open@
